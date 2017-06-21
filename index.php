@@ -1,38 +1,26 @@
 <?php
 
-// class User {
-// 	private $id;
-// 	private $username;
-// 	private $email;
-// 	private $password;
+class Post {
+	private $name;
 
+	public function __set($name,$value){
+		echo 'Setting '.$name.' to <strong>'.$value.'</strong><br>';
+		$this->name = $value;
+	}
 
-// 	public function __construct($username, $password){
-// 		$this->username = $username;
-// 		$this->password = $password;
-// 	}
+	public function __get($name){
+		echo 'Getting '.$name.' <strong>'.$this->name.'</strong><br>';
+	}
 
-// 	public function register(){
-// 		echo 'User Registered';
-// 	}
+	public function __isset($name){
+		echo 'Is '.$name.' set? <br>';
+		return isset($this->name);
+	}
+}
 
-// 	public function login(){
-// 		$this->auth_user();
-// 	}
-
-// 	public function auth_user(){
-// 		echo $this->username. ' is authenticated';
-// 	}
-
-// 	public function __destruct(){
-// 		//echo 'Destructor Called';
-// 	}
-// }
-
-// $User = new User('Vince','123');
-
-// $User->login();
-
-testing
+$post = new Post;
+$post->name = 'Hello';
+echo $post->name;
+var_dump(isset($post->name));
 
 ?>
