@@ -4,19 +4,32 @@ require 'classes/database.php';
 
 $database = new Database;
 
-$database->query('SELECT * FROM myblog.posts WHERE id = :id');
-$database->bind(':id','1');
-$rows = $database->resultset();
 
+
+//use this to filter special characters from the string input (to prevent injection of code)
 $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
 if($post['submit']){
 	$title = $post['title'];
 	$body = $post['body'];
-	echo $title;
+	
+	$database->query('INSERT INTO posts (title, body) VALUES (:title, :body)');
+	$database->bind(':title', $title);
+	$database->bind(':body', $body);
+	$database->execute();
+
+	if($database->lastInsertId()){
+		echo '<p>Post Added!</p>';
+		}
 	}
+
+$database->query('SELECT * FROM myblog.posts');
+// $database->bind(':id','1');
+$rows = $database->resultset();
+
 ?>
 <h1>Add Post</h1>
+<!-- PHP Global to redirect to the same page -->
 <form method="post" action="<?php $_SERVER['PHP_SELF']; ?>">
 	<label>Post Title</label><br>
 	<input type="text" name="title" placeholder="Add a title"><br>
