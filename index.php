@@ -16,7 +16,7 @@ if(isset($_POST['delete'])){
 	$database->execute();
 }
 
-if(isset($post['submit'])){
+if(isset($post['edit'])){
 	$id = $post['id'];
 	$title = $post['title'];
 	$body = $post['body'];
@@ -28,11 +28,31 @@ if(isset($post['submit'])){
 	$database->execute();
 }
 
+if(isset($post['submit'])){
+	$title = $post['title'];
+	$body = $post['body'];
+
+	$database->query('INSERT INTO posts (title, body) VALUES (:title, :body) ');
+	$database->bind(':title', $title);
+	$database->bind(':body', $body);
+	$database->execute();
+}
+
 $database->query('SELECT * FROM myblog.posts');
 // $database->bind(':id','1');
 $rows = $database->resultset();
 
 ?>
+<h1>Add Post</h1>
+<!-- PHP Global to redirect to the same page -->
+<form method="post" action="<?php $_SERVER['PHP_SELF']; ?>">
+	<label>Post Title</label><br>
+	<input type="text" name="title" placeholder="Add a title"><br>
+	<label>Post Body</label><br>
+	<textarea name="body"></textarea><br>
+	<input type="submit" name="submit" value="Submit">
+</form>
+
 <h1>Edit Post</h1>
 <!-- PHP Global to redirect to the same page -->
 <form method="post" action="<?php $_SERVER['PHP_SELF']; ?>">
@@ -42,7 +62,7 @@ $rows = $database->resultset();
 	<input type="text" name="title" placeholder="Add a title"><br>
 	<label>Post Body</label><br>
 	<textarea name="body"></textarea><br>
-	<input type="submit" name="submit" value="Submit">
+	<input type="submit" name="submit" value="Edit">
 </form>
 
 <h1>Posts</h1>
@@ -50,7 +70,7 @@ $rows = $database->resultset();
 	<?php foreach($rows as $row) : ?>
 
 	<div>
-		<h3><?php echo $row['title']." ID ".$row['id']; ?></h3>
+		<h3><?php echo $row['title']." (ID ".$row['id'].")"; ?></h3>
 		<p><?php echo $row['body']; ?></p>
 		<form method="post" action="<?php $_SERVER['PHP_SELF']; ?>">
 			<input type="hidden" name="delete_id" value="<?php echo $row['id']; ?>">
