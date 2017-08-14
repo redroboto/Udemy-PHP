@@ -14,6 +14,7 @@ if(isset($_POST['delete'])){
 	$database->query('DELETE FROM posts WHERE id = :id');
 	$database->bind(':id', $delete_id);
 	$database->execute();
+
 }
 
 if(isset($post['edit'])){
@@ -31,7 +32,6 @@ if(isset($post['edit'])){
 if(isset($post['submit'])){
 	$title = $post['title'];
 	$body = $post['body'];
-
 	$database->query('INSERT INTO posts (title, body) VALUES (:title, :body) ');
 	$database->bind(':title', $title);
 	$database->bind(':body', $body);
@@ -62,7 +62,7 @@ $rows = $database->resultset();
 	<input type="text" name="title" placeholder="Add a title"><br>
 	<label>Post Body</label><br>
 	<textarea name="body"></textarea><br>
-	<input type="submit" name="submit" value="Edit">
+	<input type="submit" name="edit" value="Edit">
 </form>
 
 <h1>Posts</h1>
