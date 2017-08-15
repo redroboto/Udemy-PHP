@@ -1,3 +1,6 @@
+<head>
+	<link rel="stylesheet" type="text/css" href="assets/CSS/style.css">
+</head>
 <?php
 
 require 'classes/database.php';
